@@ -1,4 +1,4 @@
-# ShadowsocksR Config PHP
+# ShadowsocksR 配置 PHP
 
 [English](README.md) | [中文](README.zh-CN.md)
 
@@ -7,23 +7,23 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/tourze/shadowsocksr-config-php.svg?style=flat-square)](https://scrutinizer-ci.com/g/tourze/shadowsocksr-config-php)
 [![Total Downloads](https://img.shields.io/packagist/dt/tourze/shadowsocksr-config-php.svg?style=flat-square)](https://packagist.org/packages/tourze/shadowsocksr-config-php)
 
-A PHP library for handling ShadowsocksR configurations. This package extends the [shadowsocks-config-php](https://github.com/tourze/shadowsocks-config-php) with additional support for ShadowsocksR-specific features like protocol and obfuscation.
+一个用于处理 ShadowsocksR 配置的 PHP 库。该包扩展了 [shadowsocks-config-php](https://github.com/tourze/shadowsocks-config-php) 的功能，增加了对 ShadowsocksR 特有功能（如协议和混淆）的支持。
 
-## Features
+## 特性
 
-- Complete support for ShadowsocksR-specific protocol and obfuscation settings
-- SSR URI encoding and decoding
-- Conversion tools between standard Shadowsocks and ShadowsocksR configurations
-- Full PSR-4 compliance
-- Unit tests with PHPUnit
+- 完整支持 ShadowsocksR 特有的协议（protocol）和混淆（obfs）设置
+- SSR URI 编码和解码
+- 标准 Shadowsocks 和 ShadowsocksR 配置间的转换工具
+- 完全符合 PSR-4 规范
+- 使用 PHPUnit 进行单元测试
 
-## Installation
+## 安装
 
 ```bash
 composer require tourze/shadowsocksr-config-php
 ```
 
-## Quick Start
+## 快速开始
 
 ```php
 <?php
@@ -32,7 +32,7 @@ use ShadowsocksR\Config\ServerConfig;
 use ShadowsocksR\Config\ClientConfig;
 use ShadowsocksR\Config\SsrUri;
 
-// Create a server configuration
+// 创建服务器配置
 $serverConfig = new ServerConfig(
     'server-uuid',
     'example.com',
@@ -43,24 +43,24 @@ $serverConfig = new ServerConfig(
     'tls1.2_ticket_auth'
 );
 
-// Generate SSR URI
+// 生成 SSR URI
 $ssrUri = SsrUri::encode($serverConfig);
 echo $ssrUri; // ssr://...
 
-// Decode SSR URI back to server config
+// 将 SSR URI 解码回服务器配置
 $decodedConfig = SsrUri::decode($ssrUri);
 ```
 
-## Documentation
+## 文档
 
-### Basic Configuration
+### 基本配置
 
-#### Server Configuration
+#### 服务器配置
 
 ```php
 use ShadowsocksR\Config\ServerConfig;
 
-// Create a server configuration
+// 创建服务器配置
 $serverConfig = new ServerConfig(
     'server-uuid',
     'example.com',
@@ -71,26 +71,26 @@ $serverConfig = new ServerConfig(
     'tls1.2_ticket_auth'
 );
 
-// Set protocol parameter and obfuscation parameter
+// 设置协议参数和混淆参数
 $serverConfig->setProtocolParam('32');
 $serverConfig->setObfsParam('cloudflare.com');
 
-// Set remarks
-$serverConfig->setRemarks('Example Server');
+// 设置备注
+$serverConfig->setRemarks('示例服务器');
 
-// Convert to JSON
+// 转换为 JSON
 $json = $serverConfig->toJson();
 
-// Create server config from JSON
+// 从 JSON 创建服务器配置
 $configFromJson = ServerConfig::fromJson($json);
 ```
 
-#### Client Configuration
+#### 客户端配置
 
 ```php
 use ShadowsocksR\Config\ClientConfig;
 
-// Create a client configuration
+// 创建客户端配置
 $clientConfig = new ClientConfig(
     'example.com',
     8388,
@@ -99,28 +99,28 @@ $clientConfig = new ClientConfig(
     'chacha20-ietf-poly1305'
 );
 
-// Set protocol and obfuscation
+// 设置协议和混淆
 $clientConfig->setProtocol('auth_chain_a');
 $clientConfig->setObfs('tls1.2_ticket_auth');
 
-// Set protocol parameter and obfuscation parameter
+// 设置协议参数和混淆参数
 $clientConfig->setProtocolParam('32');
 $clientConfig->setObfsParam('cloudflare.com');
 
-// Convert to SSR URI
+// 转换为 SSR URI
 $ssrUri = $clientConfig->toSsrUri();
 
-// Create client config from SSR URI
+// 从 SSR URI 创建客户端配置
 $configFromUri = ClientConfig::fromSsrUri($ssrUri);
 ```
 
-### SSR URI Handling
+### SSR URI 处理
 
 ```php
 use ShadowsocksR\Config\SsrUri;
 use ShadowsocksR\Config\ServerConfig;
 
-// Generate SSR URI from server config
+// 从服务器配置生成 SSR URI
 $serverConfig = new ServerConfig(
     'server-uuid',
     'example.com',
@@ -130,34 +130,34 @@ $serverConfig = new ServerConfig(
     'auth_chain_a',
     'tls1.2_ticket_auth'
 );
-$serverConfig->setRemarks('Example Server');
+$serverConfig->setRemarks('示例服务器');
 
 $ssrUri = SsrUri::encode($serverConfig);
 echo $ssrUri; // ssr://...
 
-// Decode SSR URI back to server config
+// 将 SSR URI 解码回服务器配置
 $decodedConfig = SsrUri::decode($ssrUri);
 
-// Handle multiple configurations
+// 处理多个配置
 $servers = [
     $serverConfig,
-    // ... more server configs
+    // ... 更多服务器配置
 ];
 
 $uris = SsrUri::encodeMultiple($servers);
 $decodedServers = SsrUri::decodeMultiple($uris);
 ```
 
-### Integration with Shadowsocks SIP008
+### 与 Shadowsocks SIP008 集成
 
-SIP008 is part of the Shadowsocks standard for multi-server configuration. This package provides conversion tools between standard Shadowsocks servers and ShadowsocksR servers.
+SIP008 是 Shadowsocks 标准中用于多服务器配置的部分。本包提供了标准 Shadowsocks 服务器和 ShadowsocksR 服务器之间的转换工具。
 
 ```php
 use ShadowsocksR\Config\SsrUri;
 use ShadowsocksR\Config\ServerConfig;
 use Shadowsocks\Config\SIP008;
 
-// Create SSR server configurations
+// 创建 SSR 服务器配置
 $ssrServer1 = new ServerConfig(
     'uuid-1',
     'server1.example.com',
@@ -167,7 +167,7 @@ $ssrServer1 = new ServerConfig(
     'auth_chain_a',
     'tls1.2_ticket_auth'
 );
-$ssrServer1->setRemarks('Server 1');
+$ssrServer1->setRemarks('服务器 1');
 
 $ssrServer2 = new ServerConfig(
     'uuid-2',
@@ -178,64 +178,64 @@ $ssrServer2 = new ServerConfig(
     'auth_aes128_md5',
     'http_simple'
 );
-$ssrServer2->setRemarks('Server 2');
+$ssrServer2->setRemarks('服务器 2');
 
-// Convert SSR servers to standard servers
+// 将 SSR 服务器转换为标准服务器
 $standardServers = SsrUri::convertToStandardServers([$ssrServer1, $ssrServer2]);
 
-// Create standard SIP008 configuration
+// 创建标准 SIP008 配置
 $sip008 = new SIP008();
 foreach ($standardServers as $server) {
     $sip008->addServer($server);
 }
 
-// Output standard SIP008 JSON
+// 输出标准 SIP008 JSON
 $json = $sip008->toJson();
 echo $json;
 
-// Convert from standard SIP008 back to SSR configurations
+// 从标准 SIP008 转回 SSR 配置
 $standardSip008 = SIP008::fromJson($json);
 $ssrServers = SsrUri::convertFromSIP008(
     $standardSip008, 
-    'auth_chain_a',  // Default protocol
-    'tls1.2_ticket_auth'  // Default obfuscation
+    'auth_chain_a',  // 默认协议
+    'tls1.2_ticket_auth'  // 默认混淆
 );
 ```
 
-## Protocol Configuration
+## 协议配置说明
 
-### Supported Protocol Plugins
+### 支持的协议插件
 
-ShadowsocksR supports the following protocol plugins:
+ShadowsocksR 支持以下协议插件：
 
-- `origin`: Original Shadowsocks protocol
-- `auth_sha1_v4`: SHA1 authentication version 4
-- `auth_aes128_md5`: AES128 authentication with MD5
-- `auth_aes128_sha1`: AES128 authentication with SHA1
-- `auth_chain_a`: Chain A authentication (recommended)
-- `auth_chain_b`: Chain B authentication (recommended)
+- `origin`: 原始 Shadowsocks 协议
+- `auth_sha1_v4`: SHA1 认证 v4 版本
+- `auth_aes128_md5`: AES128 认证 MD5 版本
+- `auth_aes128_sha1`: AES128 认证 SHA1 版本
+- `auth_chain_a`: Chain A 认证（推荐）
+- `auth_chain_b`: Chain B 认证（推荐）
 
-### Supported Obfuscation Plugins
+### 支持的混淆插件
 
-ShadowsocksR supports the following obfuscation plugins:
+ShadowsocksR 支持以下混淆插件：
 
-- `plain`: No obfuscation
-- `http_simple`: HTTP simple obfuscation
-- `http_post`: HTTP POST obfuscation
-- `tls1.2_ticket_auth`: TLS 1.2 ticket authentication obfuscation (recommended)
+- `plain`: 无混淆
+- `http_simple`: HTTP 简单混淆
+- `http_post`: HTTP POST 混淆
+- `tls1.2_ticket_auth`: TLS 1.2 票据认证混淆（推荐）
 
-## Testing
+## 测试
 
-Run the test suite:
+运行测试套件：
 
 ```bash
 ./vendor/bin/phpunit packages/shadowsocksr-config-php/tests
 ```
 
-## Contributing
+## 贡献
 
-Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+请查看 [CONTRIBUTING.md](CONTRIBUTING.md) 了解详情。
 
-## License
+## 许可证
 
-The MIT License (MIT). Please see [License File](LICENSE) for more information.
+MIT 许可证。请查看 [License File](LICENSE) 获取更多信息。
