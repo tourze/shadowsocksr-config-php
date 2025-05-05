@@ -7,7 +7,9 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/tourze/shadowsocksr-config-php.svg?style=flat-square)](https://scrutinizer-ci.com/g/tourze/shadowsocksr-config-php)
 [![Total Downloads](https://img.shields.io/packagist/dt/tourze/shadowsocksr-config-php.svg?style=flat-square)](https://packagist.org/packages/tourze/shadowsocksr-config-php)
 
-一个用于处理 ShadowsocksR 配置的 PHP 库。该包扩展了 [shadowsocks-config-php](https://github.com/tourze/shadowsocks-config-php) 的功能，增加了对 ShadowsocksR 特有功能（如协议和混淆）的支持。
+一个用于处理 ShadowsocksR 配置的 PHP
+库。该包扩展了 [shadowsocks-config-php](https://github.com/tourze/shadowsocks-config-php) 的功能，增加了对 ShadowsocksR
+特有功能（如协议和混淆）的支持。
 
 ## 特性
 

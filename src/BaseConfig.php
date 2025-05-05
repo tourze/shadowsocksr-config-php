@@ -47,7 +47,7 @@ abstract class BaseConfig extends SSBaseConfig
 
     /**
      * 获取协议类型
-     * 
+     *
      * @return string|null
      */
     public function getProtocol(): ?string
@@ -57,7 +57,7 @@ abstract class BaseConfig extends SSBaseConfig
 
     /**
      * 设置协议类型
-     * 
+     *
      * @param string|null $protocol
      * @return self
      */
@@ -69,7 +69,7 @@ abstract class BaseConfig extends SSBaseConfig
 
     /**
      * 获取协议参数
-     * 
+     *
      * @return string|null
      */
     public function getProtocolParam(): ?string
@@ -79,7 +79,7 @@ abstract class BaseConfig extends SSBaseConfig
 
     /**
      * 设置协议参数
-     * 
+     *
      * @param string|null $protocolParam
      * @return self
      */
@@ -91,7 +91,7 @@ abstract class BaseConfig extends SSBaseConfig
 
     /**
      * 获取混淆类型
-     * 
+     *
      * @return string|null
      */
     public function getObfs(): ?string
@@ -101,7 +101,7 @@ abstract class BaseConfig extends SSBaseConfig
 
     /**
      * 设置混淆类型
-     * 
+     *
      * @param string|null $obfs
      * @return self
      */
@@ -113,7 +113,7 @@ abstract class BaseConfig extends SSBaseConfig
 
     /**
      * 获取混淆参数
-     * 
+     *
      * @return string|null
      */
     public function getObfsParam(): ?string
@@ -123,7 +123,7 @@ abstract class BaseConfig extends SSBaseConfig
 
     /**
      * 设置混淆参数
-     * 
+     *
      * @param string|null $obfsParam
      * @return self
      */
@@ -143,15 +143,15 @@ abstract class BaseConfig extends SSBaseConfig
         if ($this->protocol !== null) {
             $data['protocol'] = $this->protocol;
         }
-        
+
         if ($this->protocolParam !== null) {
             $data['protocol_param'] = $this->protocolParam;
         }
-        
+
         if ($this->obfs !== null) {
             $data['obfs'] = $this->obfs;
         }
-        
+
         if ($this->obfsParam !== null) {
             $data['obfs_param'] = $this->obfsParam;
         }

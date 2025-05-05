@@ -2,7 +2,9 @@
 
 namespace ShadowsocksR\Config\Tests;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use Shadowsocks\Config\SIP008;
 use ShadowsocksR\Config\ServerConfig;
 use ShadowsocksR\Config\SsrUri;
@@ -220,7 +222,7 @@ class SsrUriTest extends TestCase
      */
     public function testInvalidTypeException()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         SsrUri::convertToStandardServers(['not-a-server-config']);
     }
 
@@ -230,7 +232,7 @@ class SsrUriTest extends TestCase
     public function testGenerateUUID()
     {
         // 通过反射访问私有方法
-        $reflection = new \ReflectionClass(SsrUri::class);
+        $reflection = new ReflectionClass(SsrUri::class);
         $method = $reflection->getMethod('generateUUID');
         $method->setAccessible(true);
 

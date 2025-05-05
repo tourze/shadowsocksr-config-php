@@ -2,6 +2,7 @@
 
 namespace ShadowsocksR\Config\Tests;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use ShadowsocksR\Config\ClientConfig;
 
@@ -104,7 +105,7 @@ class ClientConfigTest extends TestCase
      */
     public function testInvalidSsrUriParse()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         ClientConfig::fromSsrUri('invalid-uri');
     }
 
@@ -113,7 +114,7 @@ class ClientConfigTest extends TestCase
      */
     public function testInvalidSsrUriFormat()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         // 编码一个格式不正确的URI
         $invalidUri = 'ssr://' . base64_encode('invalid:format');
         ClientConfig::fromSsrUri($invalidUri);
@@ -175,7 +176,7 @@ class ClientConfigTest extends TestCase
      */
     public function testInvalidJsonDeserialization()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         ClientConfig::fromJson('{invalid json}');
     }
 
@@ -184,7 +185,7 @@ class ClientConfigTest extends TestCase
      */
     public function testMissingFieldsJsonDeserialization()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         ClientConfig::fromJson('{"server":"example.com"}');
     }
 }

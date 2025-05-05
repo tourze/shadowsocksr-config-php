@@ -7,7 +7,9 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/tourze/shadowsocksr-config-php.svg?style=flat-square)](https://scrutinizer-ci.com/g/tourze/shadowsocksr-config-php)
 [![Total Downloads](https://img.shields.io/packagist/dt/tourze/shadowsocksr-config-php.svg?style=flat-square)](https://packagist.org/packages/tourze/shadowsocksr-config-php)
 
-A PHP library for handling ShadowsocksR configurations. This package extends the [shadowsocks-config-php](https://github.com/tourze/shadowsocks-config-php) with additional support for ShadowsocksR-specific features like protocol and obfuscation.
+A PHP library for handling ShadowsocksR configurations. This package extends
+the [shadowsocks-config-php](https://github.com/tourze/shadowsocks-config-php) with additional support for
+ShadowsocksR-specific features like protocol and obfuscation.
 
 ## Features
 
@@ -150,7 +152,8 @@ $decodedServers = SsrUri::decodeMultiple($uris);
 
 ### Integration with Shadowsocks SIP008
 
-SIP008 is part of the Shadowsocks standard for multi-server configuration. This package provides conversion tools between standard Shadowsocks servers and ShadowsocksR servers.
+SIP008 is part of the Shadowsocks standard for multi-server configuration. This package provides conversion tools
+between standard Shadowsocks servers and ShadowsocksR servers.
 
 ```php
 use ShadowsocksR\Config\SsrUri;

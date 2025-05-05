@@ -2,6 +2,7 @@
 
 namespace ShadowsocksR\Config\Tests;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use ShadowsocksR\Config\ClientConfig;
 use ShadowsocksR\Config\ServerConfig;
@@ -121,7 +122,7 @@ class ServerConfigTest extends TestCase
      */
     public function testInvalidJsonDeserialization()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         ServerConfig::fromJson('{invalid json}');
     }
 
@@ -130,7 +131,7 @@ class ServerConfigTest extends TestCase
      */
     public function testMissingFieldsJsonDeserialization()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         ServerConfig::fromJson('{"server":"example.com"}');
     }
 }

@@ -2,6 +2,8 @@
 
 namespace ShadowsocksR\Config;
 
+use InvalidArgumentException;
+
 /**
  * ShadowsocksR服务器配置类
  */
@@ -26,7 +28,7 @@ class ServerConfig extends BaseConfig
     public function __construct(
         string  $id,
         string  $server,
-        int $serverPort,
+        int     $serverPort,
         string  $password,
         string  $method,
         ?string $protocol = null,
@@ -37,6 +39,57 @@ class ServerConfig extends BaseConfig
         $this->id = $id;
         $this->protocol = $protocol;
         $this->obfs = $obfs;
+    }
+
+    /**
+     * 从JSON字符串创建ServerConfig
+     *
+     * @param string $json JSON字符串
+     * @return self
+     * @throws InvalidArgumentException 如果JSON格式错误或缺少必要字段
+     */
+    public static function fromJson(string $json): self
+    {
+        $data = json_decode($json, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new InvalidArgumentException('JSON格式错误: ' . json_last_error_msg());
+        }
+
+        // 检查必要字段
+        $requiredFields = ['id', 'server', 'server_port', 'password', 'method'];
+        foreach ($requiredFields as $field) {
+            if (!isset($data[$field])) {
+                throw new InvalidArgumentException("缺少必要字段: {$field}");
+            }
+        }
+
+        $protocol = $data['protocol'] ?? null;
+        $obfs = $data['obfs'] ?? null;
+
+        $serverConfig = new self(
+            $data['id'],
+            $data['server'],
+            (int)$data['server_port'],
+            $data['password'],
+            $data['method'],
+            $protocol,
+            $obfs
+        );
+
+        if (isset($data['remarks'])) {
+            $serverConfig->setRemarks($data['remarks']);
+        }
+
+        if (isset($data['protocol_param'])) {
+            $serverConfig->setProtocolParam($data['protocol_param']);
+        }
+
+        if (isset($data['obfs_param'])) {
+            $serverConfig->setObfsParam($data['obfs_param']);
+        }
+
+        return $serverConfig;
     }
 
     /**
@@ -99,56 +152,5 @@ class ServerConfig extends BaseConfig
         $data['id'] = $this->id;
 
         return json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    }
-
-    /**
-     * 从JSON字符串创建ServerConfig
-     *
-     * @param string $json JSON字符串
-     * @return self
-     * @throws \InvalidArgumentException 如果JSON格式错误或缺少必要字段
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \InvalidArgumentException('JSON格式错误: ' . json_last_error_msg());
-        }
-
-        // 检查必要字段
-        $requiredFields = ['id', 'server', 'server_port', 'password', 'method'];
-        foreach ($requiredFields as $field) {
-            if (!isset($data[$field])) {
-                throw new \InvalidArgumentException("缺少必要字段: {$field}");
-            }
-        }
-
-        $protocol = $data['protocol'] ?? null;
-        $obfs = $data['obfs'] ?? null;
-
-        $serverConfig = new self(
-            $data['id'],
-            $data['server'],
-            (int)$data['server_port'],
-            $data['password'],
-            $data['method'],
-            $protocol,
-            $obfs
-        );
-
-        if (isset($data['remarks'])) {
-            $serverConfig->setRemarks($data['remarks']);
-        }
-
-        if (isset($data['protocol_param'])) {
-            $serverConfig->setProtocolParam($data['protocol_param']);
-        }
-
-        if (isset($data['obfs_param'])) {
-            $serverConfig->setObfsParam($data['obfs_param']);
-        }
-
-        return $serverConfig;
     }
 }

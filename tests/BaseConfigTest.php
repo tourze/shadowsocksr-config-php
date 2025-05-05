@@ -3,6 +3,7 @@
 namespace ShadowsocksR\Config\Tests;
 
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use ShadowsocksR\Config\BaseConfig;
 
 class BaseConfigTest extends TestCase
@@ -83,7 +84,7 @@ class BaseConfigTest extends TestCase
         $config->setObfsParam('cloudflare.com');
 
         // 使用反射来访问protected方法
-        $reflection = new \ReflectionClass($config);
+        $reflection = new ReflectionClass($config);
         $method = $reflection->getMethod('getBaseJsonArray');
         $method->setAccessible(true);
         $result = $method->invoke($config);
