@@ -2,7 +2,7 @@
 
 namespace ShadowsocksR\Config\Tests;
 
-use InvalidArgumentException;
+use ShadowsocksR\Config\Exception\InvalidConfigurationException;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Shadowsocks\Config\SIP008;
@@ -31,7 +31,6 @@ class SsrUriTest extends TestCase
         $serverConfig->setRemarks('Test Server');
 
         $uri = SsrUri::encode($serverConfig);
-        $this->assertIsString($uri);
         $this->assertStringStartsWith('ssr://', $uri);
 
         $decodedConfig = SsrUri::decode($uri);
@@ -75,13 +74,11 @@ class SsrUriTest extends TestCase
         );
 
         $uris = SsrUri::encodeMultiple([$config1, $config2]);
-        $this->assertIsArray($uris);
         $this->assertCount(2, $uris);
         $this->assertStringStartsWith('ssr://', $uris[0]);
         $this->assertStringStartsWith('ssr://', $uris[1]);
 
         $configs = SsrUri::decodeMultiple($uris);
-        $this->assertIsArray($configs);
         $this->assertCount(2, $configs);
         $this->assertInstanceOf(ServerConfig::class, $configs[0]);
         $this->assertInstanceOf(ServerConfig::class, $configs[1]);
@@ -138,7 +135,6 @@ class SsrUriTest extends TestCase
             'tls1.2_ticket_auth'
         );
 
-        $this->assertIsArray($ssrServers);
         $this->assertCount(2, $ssrServers);
         $this->assertInstanceOf(ServerConfig::class, $ssrServers[0]);
         $this->assertInstanceOf(ServerConfig::class, $ssrServers[1]);
@@ -193,7 +189,6 @@ class SsrUriTest extends TestCase
         // 转换为标准服务器
         $standardServers = SsrUri::convertToStandardServers([$ssrServer1, $ssrServer2]);
 
-        $this->assertIsArray($standardServers);
         $this->assertCount(2, $standardServers);
         $this->assertInstanceOf(\Shadowsocks\Config\ServerConfig::class, $standardServers[0]);
         $this->assertInstanceOf(\Shadowsocks\Config\ServerConfig::class, $standardServers[1]);
@@ -222,7 +217,8 @@ class SsrUriTest extends TestCase
      */
     public function testInvalidTypeException()
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(InvalidConfigurationException::class);
+        // @phpstan-ignore-next-line - 故意传递错误类型来测试异常
         SsrUri::convertToStandardServers(['not-a-server-config']);
     }
 

@@ -2,7 +2,8 @@
 
 namespace ShadowsocksR\Config;
 
-use InvalidArgumentException;
+use ShadowsocksR\Config\Exception\InvalidConfigurationException;
+use ShadowsocksR\Config\Exception\InvalidUriFormatException;
 use Shadowsocks\Config\SIP008;
 
 /**
@@ -24,7 +25,7 @@ class SsrUri
 
         foreach ($configs as $config) {
             if (!($config instanceof ServerConfig)) {
-                throw new InvalidArgumentException('必须提供 ServerConfig 类型的配置');
+                throw new InvalidConfigurationException('必须提供 ServerConfig 类型的配置');
             }
 
             $uris[] = self::encode($config);
@@ -50,7 +51,7 @@ class SsrUri
      *
      * @param string[] $uris URI 列表
      * @return ServerConfig[] 服务器配置列表
-     * @throws InvalidArgumentException 如果任何 URI 格式错误
+     * @throws InvalidUriFormatException 如果任何 URI 格式错误
      */
     public static function decodeMultiple(array $uris): array
     {
@@ -68,7 +69,7 @@ class SsrUri
      *
      * @param string $uri SSR URI
      * @return ServerConfig 服务器配置
-     * @throws InvalidArgumentException 如果 URI 格式错误
+     * @throws InvalidUriFormatException 如果 URI 格式错误
      */
     public static function decode(string $uri): ServerConfig
     {
@@ -168,7 +169,7 @@ class SsrUri
 
         foreach ($ssrServers as $ssrServer) {
             if (!($ssrServer instanceof ServerConfig)) {
-                throw new InvalidArgumentException('必须提供 ServerConfig 类型的配置');
+                throw new InvalidConfigurationException('必须提供 ServerConfig 类型的配置');
             }
 
             $standardServer = new \Shadowsocks\Config\ServerConfig(

@@ -2,7 +2,7 @@
 
 namespace ShadowsocksR\Config;
 
-use InvalidArgumentException;
+use ShadowsocksR\Config\Exception\InvalidConfigurationException;
 
 /**
  * ShadowsocksR服务器配置类
@@ -46,21 +46,21 @@ class ServerConfig extends BaseConfig
      *
      * @param string $json JSON字符串
      * @return self
-     * @throws InvalidArgumentException 如果JSON格式错误或缺少必要字段
+     * @throws InvalidConfigurationException 如果JSON格式错误或缺少必要字段
      */
     public static function fromJson(string $json): self
     {
         $data = json_decode($json, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new InvalidArgumentException('JSON格式错误: ' . json_last_error_msg());
+            throw new InvalidConfigurationException('JSON格式错误: ' . json_last_error_msg());
         }
 
         // 检查必要字段
         $requiredFields = ['id', 'server', 'server_port', 'password', 'method'];
         foreach ($requiredFields as $field) {
             if (!isset($data[$field])) {
-                throw new InvalidArgumentException("缺少必要字段: {$field}");
+                throw new InvalidConfigurationException("缺少必要字段: {$field}");
             }
         }
 

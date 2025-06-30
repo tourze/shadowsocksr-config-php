@@ -2,7 +2,8 @@
 
 namespace ShadowsocksR\Config;
 
-use InvalidArgumentException;
+use ShadowsocksR\Config\Exception\InvalidConfigurationException;
+use ShadowsocksR\Config\Exception\InvalidUriFormatException;
 
 /**
  * ShadowsocksR客户端配置类
@@ -40,17 +41,17 @@ class ClientConfig extends BaseConfig
      *
      * @param string $ssrUri SSR链接
      * @return self
-     * @throws InvalidArgumentException 如果URI格式错误
+     * @throws InvalidUriFormatException 如果URI格式错误
      */
     public static function fromSsrUri(string $ssrUri): self
     {
         if (!preg_match('/^ssr:\/\/(.+)$/', $ssrUri, $matches)) {
-            throw new InvalidArgumentException('SSR URI格式错误');
+            throw new InvalidUriFormatException('SSR URI格式错误');
         }
 
         $decoded = base64_decode($matches[1], true);
         if ($decoded === false) {
-            throw new InvalidArgumentException('SSR URI base64解码失败');
+            throw new InvalidUriFormatException('SSR URI base64解码失败');
         }
 
         // 解析URI部分和参数部分
@@ -61,7 +62,7 @@ class ClientConfig extends BaseConfig
         // 解析主要部分
         $mainSegments = explode(':', $mainPart);
         if (count($mainSegments) < 6) {
-            throw new InvalidArgumentException('SSR URI 格式错误: 缺少必要部分');
+            throw new InvalidUriFormatException('SSR URI 格式错误: 缺少必要部分');
         }
 
         $server = $mainSegments[0];
@@ -72,13 +73,13 @@ class ClientConfig extends BaseConfig
         $userInfo = base64_decode($mainSegments[5], true);
 
         if ($userInfo === false) {
-            throw new InvalidArgumentException('SSR URI user-info base64解码失败');
+            throw new InvalidUriFormatException('SSR URI user-info base64解码失败');
         }
 
         // 解析用户信息
         $userSegments = explode(':', $userInfo);
         if (count($userSegments) < 2) {
-            throw new InvalidArgumentException('SSR URI 用户信息格式错误');
+            throw new InvalidUriFormatException('SSR URI 用户信息格式错误');
         }
 
         $password = $userSegments[1];
@@ -117,21 +118,21 @@ class ClientConfig extends BaseConfig
      *
      * @param string $json JSON字符串
      * @return self
-     * @throws InvalidArgumentException 如果JSON格式错误或缺少必要字段
+     * @throws InvalidConfigurationException 如果JSON格式错误或缺少必要字段
      */
     public static function fromJson(string $json): self
     {
         $data = json_decode($json, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new InvalidArgumentException('JSON格式错误: ' . json_last_error_msg());
+            throw new InvalidConfigurationException('JSON格式错误: ' . json_last_error_msg());
         }
 
         // 检查必要字段
         $requiredFields = ['server', 'server_port', 'local_port', 'password', 'method'];
         foreach ($requiredFields as $field) {
             if (!isset($data[$field])) {
-                throw new InvalidArgumentException("缺少必要字段: {$field}");
+                throw new InvalidConfigurationException("缺少必要字段: {$field}");
             }
         }
 
